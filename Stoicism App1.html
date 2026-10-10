@@ -1,0 +1,1533 @@
+```html
+<!-- 
+  =============================================================================
+  Copyright © 2026 Joseph D. Provenzano. All Rights Reserved.
+  Proprietary Assessment Methodology and Application Architecture.
+  Unauthorized commercial extraction, redistribution, or reverse engineering 
+  is strictly prohibited.
+  =============================================================================
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Plan & Periodic Progress Tracker</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom styling for range input track & thumbs */
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 26px;
+      width: 26px;
+      border-radius: 9999px;
+      background: #4f46e5;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.45);
+      border: 3px solid #ffffff;
+      margin-top: -9px;
+      transition: transform 0.15s ease, background-color 0.15s ease;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 8px;
+      cursor: pointer;
+      background: #e2e8f0;
+      border-radius: 9999px;
+    }
+    input[type=range]:focus {
+      outline: none;
+    }
+    .modal-backdrop {
+      backdrop-filter: blur(4px);
+    }
+    /* Touch optimization */
+    button, input, textarea {
+      touch-action: manipulation;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- Application Top Navigation Bar -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-700 to-indigo-500 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight leading-tight">Plan & Progress Matrix</h1>
+            <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-500 uppercase tracking-wider">v3.0</span>
+          </div>
+          <p class="text-xs text-slate-500 font-medium">Strategic Planning & Continuous Trend Log</p>
+        </div>
+      </div>
+
+      <!-- Action Navigation Buttons -->
+      <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
+        <button id="viewTrendBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 transition-colors shadow-sm">
+          <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+          <span>View Trends</span>
+          <span id="trendCountBadge" class="hidden ml-1 px-1.5 py-0.5 text-xs font-bold rounded-full bg-indigo-600 text-white">0</span>
+        </button>
+
+        <button id="adminBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-300 transition-colors" title="Admin Settings (PIN Protected)">
+          <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span class="hidden sm:inline">Admin</span>
+        </button>
+
+        <button id="startOverBtn" type="button" class="inline-flex items-center gap-1.5 px-3 py-2 text-xs sm:text-sm font-medium rounded-xl text-rose-600 hover:bg-rose-50 border border-rose-200 transition-colors" title="Reset Current Plan & History">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+          </svg>
+          <span class="hidden sm:inline">Start Over</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 flex-1 space-y-8">
+
+    <!-- SECTION 1: TOP HALF (Static/Foundational Plan) -->
+    <section id="topSection" class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all">
+      <div class="p-5 sm:p-7 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold">1</span>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">Foundational Strategic Plan (Questions 1 - 5)</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Establish your core strategic framework. All 5 questions must be answered to activate your baseline and unlock the periodic progress tracker.
+          </p>
+        </div>
+        <div id="planStatusTag" class="self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          <span>Pending Save</span>
+        </div>
+      </div>
+
+      <div class="p-5 sm:p-7 space-y-6">
+        <!-- Question 1 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="q1" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+              <span id="label_q1">Question 1: Core Objectives & Vision</span>
+              <span class="text-rose-500 text-xs">*</span>
+            </label>
+            <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q1" title="Explanation & Purpose">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+              </svg>
+            </button>
+          </div>
+          <textarea id="q1" rows="3" placeholder="Enter response..." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-y"></textarea>
+        </div>
+
+        <!-- Question 2 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="q2" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+              <span id="label_q2">Question 2: Strategic Methods & Daily Disciplines</span>
+              <span class="text-rose-500 text-xs">*</span>
+            </label>
+            <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q2" title="Explanation & Purpose">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+              </svg>
+            </button>
+          </div>
+          <textarea id="q2" rows="3" placeholder="Enter response..." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-y"></textarea>
+        </div>
+
+        <!-- Question 3 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="q3" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+              <span id="label_q3">Question 3: Friction, Roadblocks & Contingencies</span>
+              <span class="text-rose-500 text-xs">*</span>
+            </label>
+            <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q3" title="Explanation & Purpose">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+              </svg>
+            </button>
+          </div>
+          <textarea id="q3" rows="3" placeholder="Enter response..." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-y"></textarea>
+        </div>
+
+        <!-- Question 4 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="q4" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+              <span id="label_q4">Question 4: Required Resources & Support Networks</span>
+              <span class="text-rose-500 text-xs">*</span>
+            </label>
+            <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q4" title="Explanation & Purpose">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+              </svg>
+            </button>
+          </div>
+          <textarea id="q4" rows="3" placeholder="Enter response..." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-y"></textarea>
+        </div>
+
+        <!-- Question 5 -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="q5" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
+              <span id="label_q5">Question 5: Measurable Milestones & Verifiable Signs</span>
+              <span class="text-rose-500 text-xs">*</span>
+            </label>
+            <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q5" title="Explanation & Purpose">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+              </svg>
+            </button>
+          </div>
+          <textarea id="q5" rows="3" placeholder="Enter response..." class="w-full px-3.5 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400 resize-y"></textarea>
+        </div>
+
+        <!-- Top Section Action Footer -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-500 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="planLastSavedText">Not yet saved. Enter all 5 answers to proceed.</span>
+          </div>
+
+          <button id="savePlanBtn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors shadow-md shadow-indigo-100">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
+            <span>Save Plan & Unlock Progress Assessment</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: BOTTOM HALF (Periodic Progress Assessment) -->
+    <section id="bottomSection" class="relative bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden transition-all">
+      <!-- Locked State Overlay -->
+      <div id="lockedOverlay" class="absolute inset-0 z-20 bg-slate-50/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center select-none transition-opacity">
+        <div class="w-14 h-14 rounded-2xl bg-slate-200 text-slate-500 flex items-center justify-center mb-4 shadow-inner">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 class="text-base font-bold text-slate-800">Periodic Assessment Locked</h3>
+        <p class="text-sm text-slate-500 max-w-md mt-1 mb-4">
+          Complete and save all 5 foundational questions above to activate the periodic progress assessment.
+        </p>
+        <span class="inline-flex items-center text-xs font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full">
+          Step 1 Required: Fill & Save Questions 1–5
+        </span>
+      </div>
+
+      <!-- Bottom Section Content Header -->
+      <div class="p-5 sm:p-7 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">2</span>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">Current Assessment of Actions & Trends (Questions 6 & 7)</h2>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            Rate execution against your foundational plan. Saving records a timestamped snapshot (maximum 1 log entry per calendar day).
+          </p>
+        </div>
+
+        <button id="progressExplainerBtn" type="button" class="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 self-start sm:self-auto transition-colors">
+          <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke-width="2"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/>
+          </svg>
+          <span>Periodic Progress Values Explained</span>
+        </button>
+      </div>
+
+      <div class="p-5 sm:p-7 space-y-8">
+        
+        <!-- Question 6 Block -->
+        <div class="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Question 6</span>
+                <button type="button" class="info-btn text-slate-400 hover:text-indigo-600" data-qid="q6">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/></svg>
+                </button>
+              </div>
+              <h3 id="label_q6" class="text-sm font-semibold text-slate-800">Self-Assessed Progress against Key Plan Commitments</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500">Selected Level:</span>
+              <span id="q6Badge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200">2 - Some</span>
+            </div>
+          </div>
+
+          <!-- Slider 6 -->
+          <div class="space-y-3 pt-2">
+            <input id="q6Slider" type="range" min="1" max="4" step="1" value="2" class="w-full">
+            <div class="grid grid-cols-4 text-center text-xs font-medium text-slate-500">
+              <div class="cursor-pointer hover:text-indigo-600 transition-colors" onclick="setSliderValue('q6', 1)">
+                <span class="block font-bold text-slate-700">1</span>None
+              </div>
+              <div class="cursor-pointer hover:text-indigo-600 transition-colors" onclick="setSliderValue('q6', 2)">
+                <span class="block font-bold text-slate-700">2</span>Some
+              </div>
+              <div class="cursor-pointer hover:text-indigo-600 transition-colors" onclick="setSliderValue('q6', 3)">
+                <span class="block font-bold text-slate-700">3</span>Much
+              </div>
+              <div class="cursor-pointer hover:text-indigo-600 transition-colors" onclick="setSliderValue('q6', 4)">
+                <span class="block font-bold text-slate-700">4</span>Maximal
+              </div>
+            </div>
+          </div>
+
+          <!-- 6a & 6b Sub Questions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="space-y-1.5">
+              <label for="q6a" class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                <span id="label_q6a">6a. Concrete accomplishments completed:</span>
+              </label>
+              <textarea id="q6a" rows="3" placeholder="Enter response..." class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white placeholder:text-slate-400"></textarea>
+            </div>
+            <div class="space-y-1.5">
+              <label for="q6b" class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                <span id="label_q6b">6b. Key friction, hurdles, or stalls encountered:</span>
+              </label>
+              <textarea id="q6b" rows="3" placeholder="Enter response..." class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white placeholder:text-slate-400"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Question 7 Block -->
+        <div class="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-600">Question 7</span>
+                <button type="button" class="info-btn text-slate-400 hover:text-emerald-600" data-qid="q7">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4m0-4h.01"/></svg>
+                </button>
+              </div>
+              <h3 id="label_q7" class="text-sm font-semibold text-slate-800">Self-Assessed Dynamic Alignment & Resource Optimization</h3>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500">Selected Level:</span>
+              <span id="q7Badge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">2 - Some</span>
+            </div>
+          </div>
+
+          <!-- Slider 7 -->
+          <div class="space-y-3 pt-2">
+            <input id="q7Slider" type="range" min="1" max="4" step="1" value="2" class="w-full">
+            <div class="grid grid-cols-4 text-center text-xs font-medium text-slate-500">
+              <div class="cursor-pointer hover:text-emerald-600 transition-colors" onclick="setSliderValue('q7', 1)">
+                <span class="block font-bold text-slate-700">1</span>None
+              </div>
+              <div class="cursor-pointer hover:text-emerald-600 transition-colors" onclick="setSliderValue('q7', 2)">
+                <span class="block font-bold text-slate-700">2</span>Some
+              </div>
+              <div class="cursor-pointer hover:text-emerald-600 transition-colors" onclick="setSliderValue('q7', 3)">
+                <span class="block font-bold text-slate-700">3</span>Much
+              </div>
+              <div class="cursor-pointer hover:text-emerald-600 transition-colors" onclick="setSliderValue('q7', 4)">
+                <span class="block font-bold text-slate-700">4</span>Maximal
+              </div>
+            </div>
+          </div>
+
+          <!-- 7a & 7b Sub Questions -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+            <div class="space-y-1.5">
+              <label for="q7a" class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                <span id="label_q7a">7a. Adjustments, pivots, or habit refinements:</span>
+              </label>
+              <textarea id="q7a" rows="3" placeholder="Enter response..." class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white placeholder:text-slate-400"></textarea>
+            </div>
+            <div class="space-y-1.5">
+              <label for="q7b" class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                <span id="label_q7b">7b. Immediate focus priorities for next check-in:</span>
+              </label>
+              <textarea id="q7b" rows="3" placeholder="Enter response..." class="w-full px-3 py-2 text-xs sm:text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white placeholder:text-slate-400"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section Action Footer -->
+        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-xs text-slate-500 flex items-center gap-1.5">
+            <svg class="w-4 h-4 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span id="logStatusText">Entries logged today will establish or update today's trend snapshot.</span>
+          </div>
+
+          <button id="saveProgressBtn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl font-semibold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 transition-colors shadow-md shadow-emerald-100">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>Save Daily Assessment</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- App Footer with Legal Notice -->
+  <footer class="bg-white border-t border-slate-200 mt-auto py-5">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+      <div class="flex items-center gap-2">
+        <span>Copyright © 2026 <strong>Joseph D. Provenzano</strong>. All Rights Reserved.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button type="button" onclick="openModal('termsModal')" class="hover:text-indigo-600 underline font-medium transition-colors">
+          Terms of Use & License
+        </button>
+        <span>•</span>
+        <span class="text-slate-400">Proprietary Evaluation Release</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: Terms of Use & Legal License -->
+  <div id="termsModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/50 modal-backdrop" onclick="closeModal('termsModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl border border-slate-200 z-10 max-h-[85vh] flex flex-col">
+      <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-base font-bold text-slate-900">Terms of Use & License Agreement</h3>
+            <p class="text-xs text-slate-500">Copyright © 2026 Joseph D. Provenzano. All Rights Reserved.</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('termsModal')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto py-4 text-xs sm:text-sm text-slate-600 space-y-3.5 leading-relaxed">
+        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs text-slate-700">
+          <strong>Notice:</strong> This software and the associated 7-Question Strategic & Periodic Assessment Methodology are the proprietary intellectual property of <strong>Joseph D. Provenzano</strong>.
+        </div>
+        <p><strong>1. License Grant:</strong> You are granted a limited, revocable, personal, and non-transferable license to execute and evaluate this application on your personal device.</p>
+        <p><strong>2. Restrictions:</strong> You may not copy, reverse engineer, decompile, redistribute, license, sell, or commercially exploit this software, its prompts, its rubrics, or its underlying architecture without prior written authorization.</p>
+        <p><strong>3. Data Privacy:</strong> All plan content, progress values, and personal trends remain strictly local to your device partition unless explicitly exported by you.</p>
+        <p><strong>4. Disclaimer of Warranty:</strong> The software is provided "AS IS", without warranty of any kind, express or implied. In no event shall the author be liable for any claim or damages.</p>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex justify-end">
+        <button type="button" onclick="closeModal('termsModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors">
+          I Understand & Agree
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Explanation Modal (Question Info & Rubrics) -->
+  <div id="infoModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/40 modal-backdrop transition-opacity" onclick="closeModal('infoModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 z-10 transform transition-all">
+      <div class="flex items-start justify-between gap-3 border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 id="infoModalTitle" class="text-base font-bold text-slate-900">Question Guidance</h3>
+        </div>
+        <button type="button" onclick="closeModal('infoModal')" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="infoModalBody" class="py-4 text-sm text-slate-600 space-y-3 leading-relaxed whitespace-pre-wrap"></div>
+      <div class="pt-3 border-t border-slate-100 flex justify-end">
+        <button type="button" onclick="closeModal('infoModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+          Got It
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Trend History Viewer -->
+  <div id="trendModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/50 modal-backdrop" onclick="closeModal('trendModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-3xl w-full p-6 shadow-2xl border border-slate-200 z-10 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900">Periodic Assessment Trend Log</h3>
+          <p class="text-xs text-slate-500">Historical performance entries (maximum 1 logged per calendar day).</p>
+        </div>
+        <button type="button" onclick="closeModal('trendModal')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Trend Summary Stats & Table -->
+      <div class="flex-1 overflow-y-auto py-4 space-y-4">
+        <div id="trendEmptyState" class="hidden text-center py-12 px-4">
+          <div class="w-12 h-12 mx-auto rounded-full bg-slate-100 text-slate-400 flex items-center justify-center mb-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+          <p class="text-sm font-semibold text-slate-700">No Historical Logs Yet</p>
+          <p class="text-xs text-slate-500 mt-1">Once you complete questions 6 & 7 and click "Save Daily Assessment", your entries will display here.</p>
+        </div>
+
+        <div id="trendContentWrapper" class="space-y-4">
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="bg-slate-50 border border-slate-200/80 p-3 rounded-xl text-center">
+              <span class="text-xs text-slate-500 block">Total Logged Days</span>
+              <span id="statTotalDays" class="text-lg font-bold text-slate-800">0</span>
+            </div>
+            <div class="bg-indigo-50/70 border border-indigo-100 p-3 rounded-xl text-center">
+              <span class="text-xs text-indigo-700 block">Average Q6 Rank</span>
+              <span id="statAvgQ6" class="text-lg font-bold text-indigo-900">-</span>
+            </div>
+            <div class="bg-emerald-50/70 border border-emerald-100 p-3 rounded-xl text-center col-span-2 sm:col-span-1">
+              <span class="text-xs text-emerald-700 block">Average Q7 Rank</span>
+              <span id="statAvgQ7" class="text-lg font-bold text-emerald-900">-</span>
+            </div>
+          </div>
+
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <table class="w-full text-left text-xs sm:text-sm">
+              <thead class="bg-slate-100/70 text-slate-600 font-semibold border-b border-slate-200">
+                <tr>
+                  <th class="py-3 px-4">Date</th>
+                  <th class="py-3 px-4">Q6: Execution</th>
+                  <th class="py-3 px-4">Q7: Synergy</th>
+                  <th class="py-3 px-4 text-right">Snapshot</th>
+                </tr>
+              </thead>
+              <tbody id="trendTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex justify-between items-center text-xs text-slate-500">
+        <span>Click any row or "Inspect" to review that day's qualitative remarks.</span>
+        <button type="button" onclick="closeModal('trendModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Read-Only Daily Snapshot Viewer -->
+  <div id="snapshotModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/50 modal-backdrop" onclick="closeModal('snapshotModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 z-10 max-h-[90vh] flex flex-col">
+      <div class="flex items-start justify-between border-b border-slate-100 pb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 text-xs font-bold rounded bg-slate-100 text-slate-700">Read-Only Archive</span>
+            <span id="snapshotDateHeading" class="text-base font-bold text-slate-900">Snapshot</span>
+          </div>
+          <p id="snapshotTimestampText" class="text-xs text-slate-500 mt-0.5">Recorded at --</p>
+        </div>
+        <button type="button" onclick="closeModal('snapshotModal')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto py-4 space-y-5 text-sm">
+        <!-- Q6 Snapshot Block -->
+        <div class="bg-indigo-50/40 p-4 rounded-xl border border-indigo-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span id="snapshotQ6Title" class="text-xs font-bold uppercase tracking-wider text-indigo-700">Question 6 Rank</span>
+            <span id="snapshotQ6Badge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200"></span>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span id="snapshotLabel_q6a" class="text-xs font-semibold text-slate-500 block">6a. Accomplishments:</span>
+              <p id="snapshotQ6a" class="mt-1 p-2.5 rounded-lg bg-white border border-slate-200 text-slate-800 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed min-h-[48px]"></p>
+            </div>
+            <div>
+              <span id="snapshotLabel_q6b" class="text-xs font-semibold text-slate-500 block">6b. Friction & hurdles:</span>
+              <p id="snapshotQ6b" class="mt-1 p-2.5 rounded-lg bg-white border border-slate-200 text-slate-800 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed min-h-[48px]"></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q7 Snapshot Block -->
+        <div class="bg-emerald-50/40 p-4 rounded-xl border border-emerald-100 space-y-3">
+          <div class="flex items-center justify-between">
+            <span id="snapshotQ7Title" class="text-xs font-bold uppercase tracking-wider text-emerald-700">Question 7 Rank</span>
+            <span id="snapshotQ7Badge" class="px-2.5 py-0.5 text-xs font-bold rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200"></span>
+          </div>
+          <div class="space-y-2">
+            <div>
+              <span id="snapshotLabel_q7a" class="text-xs font-semibold text-slate-500 block">7a. Adjustments & refinements:</span>
+              <p id="snapshotQ7a" class="mt-1 p-2.5 rounded-lg bg-white border border-slate-200 text-slate-800 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed min-h-[48px]"></p>
+            </div>
+            <div>
+              <span id="snapshotLabel_q7b" class="text-xs font-semibold text-slate-500 block">7b. Immediate focus priorities:</span>
+              <p id="snapshotQ7b" class="mt-1 p-2.5 rounded-lg bg-white border border-slate-200 text-slate-800 text-xs sm:text-sm whitespace-pre-wrap leading-relaxed min-h-[48px]"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
+        <button type="button" onclick="openTrendModal()" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800">
+          ← Back to All Trends
+        </button>
+        <button type="button" onclick="closeModal('snapshotModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+          Close Snapshot
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PIN Authentication for Admin -->
+  <div id="pinModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/50 modal-backdrop" onclick="closeModal('pinModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 z-10 text-center space-y-4">
+      <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-base font-bold text-slate-900">Admin Authentication</h3>
+        <p class="text-xs text-slate-500 mt-1">Enter your 4-digit security PIN to access prompt customization and backup suite. (Default PIN: 1234)</p>
+      </div>
+      <div>
+        <input id="adminPinInput" type="password" maxlength="8" placeholder="Enter PIN" class="text-center tracking-widest text-lg font-bold w-40 px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 mx-auto">
+        <p id="pinErrorText" class="text-xs text-rose-600 mt-1.5 hidden font-medium">Incorrect PIN. Try again.</p>
+      </div>
+      <div class="flex items-center justify-center gap-2 pt-2">
+        <button type="button" onclick="closeModal('pinModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">
+          Cancel
+        </button>
+        <button id="submitPinBtn" type="button" class="px-5 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-100">
+          Unlock Admin
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Full Admin Dashboard Modal -->
+  <div id="adminModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/60 modal-backdrop" onclick="closeModal('adminModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-4xl w-full p-6 shadow-2xl border border-slate-200 z-10 max-h-[92vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">
+            ⚙
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-slate-900">Admin Control & Prompt Customization</h3>
+            <p class="text-xs text-slate-500">Edit all system questions, popup guidance, scale criteria, and handle backups.</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeModal('adminModal')" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation Tabs inside Admin -->
+      <div class="flex border-b border-slate-200 mt-3 gap-2 overflow-x-auto text-xs font-semibold">
+        <button id="adminTabBtn1" type="button" class="admin-tab-btn py-2 px-3 border-b-2 border-indigo-600 text-indigo-600" onclick="switchAdminTab(1)">Top Questions (1–5)</button>
+        <button id="adminTabBtn2" type="button" class="admin-tab-btn py-2 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700" onclick="switchAdminTab(2)">Bottom Questions (6 & 7)</button>
+        <button id="adminTabBtn3" type="button" class="admin-tab-btn py-2 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700" onclick="switchAdminTab(3)">Scale Explainer</button>
+        <button id="adminTabBtn4" type="button" class="admin-tab-btn py-2 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700" onclick="switchAdminTab(4)">Security & Backup</button>
+      </div>
+
+      <!-- Tab Panels Content -->
+      <div class="flex-1 overflow-y-auto py-4 space-y-6 text-xs sm:text-sm">
+        
+        <!-- Tab 1: Questions 1 to 5 Editor -->
+        <div id="adminTabPane1" class="admin-tab-pane space-y-5">
+          <p class="text-xs text-slate-500">Customize the exact prompt label and explanatory pop-up content for Questions 1 through 5:</p>
+          <div id="adminQuestions1to5Container" class="space-y-4"></div>
+        </div>
+
+        <!-- Tab 2: Questions 6 & 7 Editor -->
+        <div id="adminTabPane2" class="admin-tab-pane hidden space-y-5">
+          <p class="text-xs text-slate-500">Customize the sliders and open-ended text questions for Questions 6 and 7:</p>
+          <div class="space-y-4">
+            <!-- Q6 Config -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3">
+              <span class="font-bold text-indigo-700 text-xs uppercase">Question 6 (Slider)</span>
+              <div>
+                <label class="text-xs font-semibold text-slate-600 block">Question Title / Prompt:</label>
+                <input id="cfg_q6_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-600 block">Explanatory Pop-Up Text:</label>
+                <textarea id="cfg_q6_explainer" rows="2" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300"></textarea>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label class="text-xs font-semibold text-slate-600 block">Sub-Question 6a Label:</label>
+                  <input id="cfg_q6a_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-slate-600 block">Sub-Question 6b Label:</label>
+                  <input id="cfg_q6b_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+                </div>
+              </div>
+            </div>
+
+            <!-- Q7 Config -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3">
+              <span class="font-bold text-emerald-700 text-xs uppercase">Question 7 (Slider)</span>
+              <div>
+                <label class="text-xs font-semibold text-slate-600 block">Question Title / Prompt:</label>
+                <input id="cfg_q7_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+              </div>
+              <div>
+                <label class="text-xs font-semibold text-slate-600 block">Explanatory Pop-Up Text:</label>
+                <textarea id="cfg_q7_explainer" rows="2" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300"></textarea>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div>
+                  <label class="text-xs font-semibold text-slate-600 block">Sub-Question 7a Label:</label>
+                  <input id="cfg_q7a_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+                </div>
+                <div>
+                  <label class="text-xs font-semibold text-slate-600 block">Sub-Question 7b Label:</label>
+                  <input id="cfg_q7b_prompt" type="text" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Scale Explainer Editor -->
+        <div id="adminTabPane3" class="admin-tab-pane hidden space-y-4">
+          <div>
+            <label class="text-xs font-semibold text-slate-700 block">Pop-Up Text for 'Periodic Progress Values Explained':</label>
+            <p class="text-xs text-slate-500 mb-2">Explain what is meant by the 4-value scale (1-None, 2-Some, 3-Much, 4-Maximal) relative to the top 5 questions.</p>
+            <textarea id="cfg_scale_explainer" rows="8" class="w-full px-3.5 py-2.5 text-xs sm:text-sm rounded-xl border border-slate-300 font-mono"></textarea>
+          </div>
+        </div>
+
+        <!-- Tab 4: Security & Backup -->
+        <div id="adminTabPane4" class="admin-tab-pane hidden space-y-5">
+          <!-- Change PIN -->
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Change Admin PIN</h4>
+            <div class="flex items-center gap-3">
+              <input id="cfg_new_pin" type="password" maxlength="8" placeholder="New PIN (4–8 digits)" class="w-48 px-3 py-2 text-xs rounded-lg border border-slate-300">
+              <button id="updatePinBtn" type="button" class="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700">Update PIN</button>
+            </div>
+          </div>
+
+          <!-- Data Backup & Restore (JSON) -->
+          <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3">
+            <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Data Portability (Capacitor & Web Storage)</h4>
+            <p class="text-xs text-slate-500">Export a complete `.json` archive of your plan, prompts, and trend history, or restore an earlier backup file.</p>
+            <div class="flex flex-wrap gap-3 pt-1">
+              <button id="exportJsonBtn" type="button" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>Export Full Backup (JSON)</span>
+              </button>
+
+              <label class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l4-4m0 0l4 4m-4-4v12"/></svg>
+                <span>Import Backup (JSON)</span>
+                <input id="importJsonInput" type="file" accept=".json" class="hidden">
+              </label>
+            </div>
+          </div>
+
+          <!-- Reset Defaults -->
+          <div class="p-4 rounded-xl border border-rose-200 bg-rose-50/40 space-y-2">
+            <h4 class="text-xs font-bold text-rose-800 uppercase tracking-wider">Reset Prompts to System Defaults</h4>
+            <p class="text-xs text-rose-700">Reverts all question labels and pop-up text back to standard factory wording without deleting saved user plans.</p>
+            <button id="resetDefaultsBtn" type="button" class="px-4 py-2 text-xs font-semibold rounded-lg bg-rose-600 text-white hover:bg-rose-700">
+              Restore Default Prompts & Popups
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Admin Modal Footer -->
+      <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
+        <span class="text-xs text-slate-500">Unsaved configuration changes discard upon closing.</span>
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="closeModal('adminModal')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200">
+            Cancel
+          </button>
+          <button id="saveAdminConfigBtn" type="button" class="px-5 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-100">
+            Save All Configuration
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Confirmation Dialog (No native alert/confirm) -->
+  <div id="confirmModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+    <div class="fixed inset-0 bg-slate-900/60 modal-backdrop" onclick="closeModal('confirmModal')"></div>
+    <div class="relative bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 z-10">
+      <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+      </div>
+      <h3 id="confirmModalTitle" class="text-base font-bold text-slate-900">Permanently Start Over?</h3>
+      <p id="confirmModalMessage" class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+        Continuing will completely wipe out your foundational 5 plan questions, current assessment drafts, and all historical daily trend logs.
+      </p>
+      <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl mt-4 text-xs font-medium text-rose-800">
+        This action cannot be undone. User data will return to its initial blank state.
+      </div>
+      <div class="pt-5 flex items-center justify-end gap-3">
+        <button type="button" onclick="closeModal('confirmModal')" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+          Cancel
+        </button>
+        <button id="confirmActionBtn" type="button" class="px-4 py-2 text-xs sm:text-sm font-semibold rounded-xl bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white shadow-md shadow-rose-200 transition-colors">
+          Yes, Proceed
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 space-y-2 pointer-events-none"></div>
+
+  <script>
+    /* Default System Configuration & Methodology Text */
+    const DEFAULT_CONFIG = {
+      pin: '1234',
+      q1: {
+        title: "Question 1: Core Objectives & Vision",
+        prompt: "What are the essential, high-impact goals you are committing to achieve?",
+        explainer: "Define the overarching outcomes you are committing to achieve.\n\nThis anchors your foundational plan. Rather than listing trivial tasks, formulate 1 to 3 pivotal results that define transformative success over this tracking cycle."
+      },
+      q2: {
+        title: "Question 2: Strategic Methods & Daily Disciplines",
+        prompt: "What repeatable workflows, habits, or methodologies will drive execution?",
+        explainer: "Clarify the exact methodologies and rituals that turn vision into reality.\n\nOutline how you will execute your priorities on a systematic basis (e.g., deep work blocks, weekly agile sprints, structured review intervals)."
+      },
+      q3: {
+        title: "Question 3: Friction, Roadblocks & Contingencies",
+        prompt: "What potential constraints, blockers, or pitfalls might derail this plan and how will you handle them?",
+        explainer: "Pre-mortem foreseeable challenges to engineer proactive resilience.\n\nIdentify what internal or external disruptions could derail focus (burnout, dependency delays, scope creep) and define your default countermeasure."
+      },
+      q4: {
+        title: "Question 4: Required Resources & Support Networks",
+        prompt: "What tools, systems, advisory partners, or skills are required for reliable momentum?",
+        explainer: "Audit and assemble the prerequisite assets needed for sustained momentum.\n\nIdentify software tools, budget, key collaborators, mentors, or educational resources essential to your velocity."
+      },
+      q5: {
+        title: "Question 5: Measurable Milestones & Verifiable Signs",
+        prompt: "What explicit quantitative criteria or tangible outcomes indicate undeniable success?",
+        explainer: "Establish quantifiable criteria that prove progress without ambiguity.\n\nState concrete metrics or milestones that will tell you without self-deception whether the plan is succeeding."
+      },
+      q6: {
+        title: "Question 6: Milestone & Execution Velocity",
+        prompt: "Self-Assessed Progress against Key Plan Commitments",
+        explainer: "Rate your execution against your planned commitments (Questions 1–5).\n\nUse the 4-point scale to assess whether your daily actions are translating to authentic forward velocity."
+      },
+      q6a: {
+        prompt: "6a. Concrete accomplishments completed:"
+      },
+      q6b: {
+        prompt: "6b. Key friction, hurdles, or stalls encountered:"
+      },
+      q7: {
+        title: "Question 7: Adaptability & Resource Synergy",
+        prompt: "Self-Assessed Dynamic Alignment & Resource Optimization",
+        explainer: "Rate how effectively you adjusted your resources and habits when real-world constraints arose.\n\nAssesses proactive alignment and resilience."
+      },
+      q7a: {
+        prompt: "7a. Adjustments, pivots, or habit refinements:"
+      },
+      q7b: {
+        prompt: "7b. Immediate focus priorities for next check-in:"
+      },
+      scaleExplainer: "The 4-value scale provides a standardized self-assessment of how effectively you are executing relative to your foundational plan (Questions 1–5):\n\n1 - None: Minimal or zero measurable progress made against planned milestones; severe stalls or derailment.\n\n2 - Some: Partial execution; foundational groundwork initiated, but critical milestones remain unreached or delayed.\n\n3 - Much: Substantial, meaningful forward movement; major milestones achieved with high adherence to planned strategies.\n\n4 - Maximal: Optimal, peak execution; surpassed targets, maintained disciplines, and resolved friction proactively."
+    };
+
+    const STORAGE_KEY = 'matrix_tracker_data_v3';
+
+    let appState = {
+      config: JSON.parse(JSON.stringify(DEFAULT_CONFIG)),
+      plan: { q1: '', q2: '', q3: '', q4: '', q5: '' },
+      planSaved: false,
+      planLastSavedAt: null,
+      currentAssessment: { q6: 2, q6a: '', q6b: '', q7: 2, q7a: '', q7b: '', lastLoggedAt: null },
+      historyLogs: []
+    };
+
+    const RANK_LABELS = {
+      1: '1 - None',
+      2: '2 - Some',
+      3: '3 - Much',
+      4: '4 - Maximal'
+    };
+
+    async function requestPersistentStorage() {
+      if (navigator.storage && navigator.storage.persist) {
+        try {
+          const isPersisted = await navigator.storage.persisted();
+          if (!isPersisted) {
+            const granted = await navigator.storage.persist();
+            console.log('StorageManager: Persistent storage granted:', granted);
+          }
+        } catch (e) {
+          console.warn('StorageManager persist error:', e);
+        }
+      }
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          appState = {
+            ...appState,
+            ...parsed,
+            config: { ...DEFAULT_CONFIG, ...(parsed.config || {}) },
+            plan: { ...appState.plan, ...(parsed.plan || {}) },
+            currentAssessment: { ...appState.currentAssessment, ...(parsed.currentAssessment || {}) },
+            historyLogs: Array.isArray(parsed.historyLogs) ? parsed.historyLogs : []
+          };
+        }
+      } catch (err) {
+        console.error('Failed to load localStorage data:', err);
+      }
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (err) {
+        console.error('Failed to save to localStorage:', err);
+      }
+    }
+
+    function getLocalDateString(d = new Date()) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+
+    function applyDynamicPrompts() {
+      const cfg = appState.config;
+      
+      for (let i = 1; i <= 5; i++) {
+        const key = `q${i}`;
+        const lbl = document.getElementById(`label_${key}`);
+        const txt = document.getElementById(key);
+        if (lbl && cfg[key]) lbl.textContent = cfg[key].title;
+        if (txt && cfg[key]) txt.placeholder = cfg[key].prompt;
+      }
+
+      if (document.getElementById('label_q6')) document.getElementById('label_q6').textContent = cfg.q6.prompt;
+      if (document.getElementById('label_q6a')) document.getElementById('label_q6a').textContent = cfg.q6a.prompt;
+      if (document.getElementById('label_q6b')) document.getElementById('label_q6b').textContent = cfg.q6b.prompt;
+
+      if (document.getElementById('label_q7')) document.getElementById('label_q7').textContent = cfg.q7.prompt;
+      if (document.getElementById('label_q7a')) document.getElementById('label_q7a').textContent = cfg.q7a.prompt;
+      if (document.getElementById('label_q7b')) document.getElementById('label_q7b').textContent = cfg.q7b.prompt;
+    }
+
+    function renderApp() {
+      applyDynamicPrompts();
+
+      // Top Section Values
+      document.getElementById('q1').value = appState.plan.q1 || '';
+      document.getElementById('q2').value = appState.plan.q2 || '';
+      document.getElementById('q3').value = appState.plan.q3 || '';
+      document.getElementById('q4').value = appState.plan.q4 || '';
+      document.getElementById('q5').value = appState.plan.q5 || '';
+
+      const planStatusTag = document.getElementById('planStatusTag');
+      const planLastSavedText = document.getElementById('planLastSavedText');
+      const lockedOverlay = document.getElementById('lockedOverlay');
+
+      if (appState.planSaved) {
+        planStatusTag.className = 'self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1.5';
+        planStatusTag.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span><span>Plan Active & Saved</span>';
+        
+        const dateStr = appState.planLastSavedAt ? new Date(appState.planLastSavedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Saved';
+        planLastSavedText.textContent = `Last saved: ${dateStr}. Editable at any time.`;
+        lockedOverlay.classList.add('hidden');
+      } else {
+        planStatusTag.className = 'self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5';
+        planStatusTag.innerHTML = '<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Pending Initial Save</span>';
+        planLastSavedText.textContent = 'Not yet saved. Enter all 5 answers to proceed.';
+        lockedOverlay.classList.remove('hidden');
+      }
+
+      // Bottom Section Values
+      const q6Val = appState.currentAssessment.q6 || 2;
+      const q7Val = appState.currentAssessment.q7 || 2;
+
+      document.getElementById('q6Slider').value = q6Val;
+      updateSliderDisplay('q6', q6Val);
+
+      document.getElementById('q7Slider').value = q7Val;
+      updateSliderDisplay('q7', q7Val);
+
+      document.getElementById('q6a').value = appState.currentAssessment.q6a || '';
+      document.getElementById('q6b').value = appState.currentAssessment.q6b || '';
+      document.getElementById('q7a').value = appState.currentAssessment.q7a || '';
+      document.getElementById('q7b').value = appState.currentAssessment.q7b || '';
+
+      // Trend Badge
+      const count = appState.historyLogs.length;
+      const badge = document.getElementById('trendCountBadge');
+      if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+
+      // Overwrite Notice for Today
+      const todayStr = getLocalDateString();
+      const existingToday = appState.historyLogs.find(item => item.date === todayStr);
+      const logStatusText = document.getElementById('logStatusText');
+      if (existingToday) {
+        const timeStr = new Date(existingToday.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        logStatusText.textContent = `An entry exists for today (${timeStr}). Saving again will update today's log.`;
+      } else {
+        logStatusText.textContent = `Entries logged today (${todayStr}) will establish today's trend snapshot.`;
+      }
+    }
+
+    function updateSliderDisplay(qKey, val) {
+      const num = parseInt(val, 10);
+      const badge = document.getElementById(`${qKey}Badge`);
+      if (!badge) return;
+
+      badge.textContent = RANK_LABELS[num] || `${num}`;
+      if (qKey === 'q6') {
+        badge.className = `px-2.5 py-0.5 text-xs font-bold rounded-full border ${
+          num === 1 ? 'bg-slate-100 text-slate-700 border-slate-300' :
+          num === 2 ? 'bg-indigo-100 text-indigo-800 border-indigo-200' :
+          num === 3 ? 'bg-blue-100 text-blue-800 border-blue-200' :
+          'bg-emerald-100 text-emerald-800 border-emerald-200'
+        }`;
+      } else {
+        badge.className = `px-2.5 py-0.5 text-xs font-bold rounded-full border ${
+          num === 1 ? 'bg-slate-100 text-slate-700 border-slate-300' :
+          num === 2 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' :
+          num === 3 ? 'bg-teal-100 text-teal-800 border-teal-200' :
+          'bg-green-100 text-green-800 border-green-200'
+        }`;
+      }
+    }
+
+    function setSliderValue(qKey, val) {
+      const slider = document.getElementById(`${qKey}Slider`);
+      if (slider) {
+        slider.value = val;
+        updateSliderDisplay(qKey, val);
+      }
+    }
+
+    document.getElementById('savePlanBtn').addEventListener('click', () => {
+      const q1 = document.getElementById('q1').value.trim();
+      const q2 = document.getElementById('q2').value.trim();
+      const q3 = document.getElementById('q3').value.trim();
+      const q4 = document.getElementById('q4').value.trim();
+      const q5 = document.getElementById('q5').value.trim();
+
+      if (!q1 || !q2 || !q3 || !q4 || !q5) {
+        showToast('Please answer all 5 foundational questions before saving your plan.', 'warning');
+        return;
+      }
+
+      appState.plan = { q1, q2, q3, q4, q5 };
+      appState.planSaved = true;
+      appState.planLastSavedAt = new Date().toISOString();
+      saveState();
+
+      renderApp();
+      showToast('Foundational Strategic Plan saved! Progress assessment unlocked.', 'success');
+
+      const bottom = document.getElementById('bottomSection');
+      bottom.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    document.getElementById('saveProgressBtn').addEventListener('click', () => {
+      if (!appState.planSaved) {
+        showToast('Please complete and save your foundational plan above first.', 'warning');
+        return;
+      }
+
+      const q6 = parseInt(document.getElementById('q6Slider').value, 10);
+      const q6a = document.getElementById('q6a').value.trim();
+      const q6b = document.getElementById('q6b').value.trim();
+      const q7 = parseInt(document.getElementById('q7Slider').value, 10);
+      const q7a = document.getElementById('q7a').value.trim();
+      const q7b = document.getElementById('q7b').value.trim();
+
+      const todayStr = getLocalDateString();
+      const now = Date.now();
+
+      appState.currentAssessment = {
+        q6, q6a, q6b, q7, q7a, q7b,
+        lastLoggedAt: new Date(now).toISOString()
+      };
+
+      const newEntry = {
+        date: todayStr,
+        timestamp: now,
+        q6, q6a, q6b, q7, q7a, q7b
+      };
+
+      const existingIndex = appState.historyLogs.findIndex(item => item.date === todayStr);
+      let isOverwrite = false;
+
+      if (existingIndex >= 0) {
+        appState.historyLogs[existingIndex] = newEntry;
+        isOverwrite = true;
+      } else {
+        appState.historyLogs.push(newEntry);
+      }
+
+      appState.historyLogs.sort((a, b) => b.timestamp - a.timestamp);
+
+      saveState();
+      renderApp();
+
+      if (isOverwrite) {
+        showToast(`Updated today's entry (${todayStr}) in the trend log.`, 'info');
+      } else {
+        showToast(`New trend snapshot logged for ${todayStr}!`, 'success');
+      }
+    });
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.info-btn');
+      if (btn) {
+        e.stopPropagation();
+        const qid = btn.getAttribute('data-qid');
+        const cfg = appState.config[qid];
+        if (cfg) {
+          document.getElementById('infoModalTitle').textContent = cfg.title;
+          document.getElementById('infoModalBody').textContent = cfg.explainer;
+          openModal('infoModal');
+        }
+      }
+    });
+
+    document.getElementById('progressExplainerBtn').addEventListener('click', () => {
+      document.getElementById('infoModalTitle').textContent = "Periodic Progress Values Explained";
+      document.getElementById('infoModalBody').textContent = appState.config.scaleExplainer;
+      openModal('infoModal');
+    });
+
+    document.getElementById('q6Slider').addEventListener('input', (e) => updateSliderDisplay('q6', e.target.value));
+    document.getElementById('q7Slider').addEventListener('input', (e) => updateSliderDisplay('q7', e.target.value));
+
+    function openTrendModal() {
+      const logs = appState.historyLogs;
+      const emptyState = document.getElementById('trendEmptyState');
+      const contentWrapper = document.getElementById('trendContentWrapper');
+      const tableBody = document.getElementById('trendTableBody');
+
+      if (!logs || logs.length === 0) {
+        emptyState.classList.remove('hidden');
+        contentWrapper.classList.add('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        contentWrapper.classList.remove('hidden');
+
+        document.getElementById('statTotalDays').textContent = logs.length;
+        const avgQ6 = (logs.reduce((acc, curr) => acc + (curr.q6 || 0), 0) / logs.length).toFixed(1);
+        const avgQ7 = (logs.reduce((acc, curr) => acc + (curr.q7 || 0), 0) / logs.length).toFixed(1);
+
+        document.getElementById('statAvgQ6').textContent = `${avgQ6} / 4.0`;
+        document.getElementById('statAvgQ7').textContent = `${avgQ7} / 4.0`;
+
+        tableBody.innerHTML = '';
+        logs.forEach((log) => {
+          const row = document.createElement('tr');
+          row.className = 'hover:bg-slate-50 transition-colors cursor-pointer group';
+          
+          const formattedDate = new Date(log.timestamp).toLocaleDateString(undefined, {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+          });
+
+          row.innerHTML = `
+            <td class="py-3 px-4 font-medium text-slate-900">${formattedDate}</td>
+            <td class="py-3 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+                ${RANK_LABELS[log.q6] || log.q6}
+              </span>
+            </td>
+            <td class="py-3 px-4">
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                ${RANK_LABELS[log.q7] || log.q7}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <button type="button" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 group-hover:underline inline-flex items-center gap-1">
+                <span>Inspect</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </td>
+          `;
+
+          row.addEventListener('click', () => showSnapshot(log));
+          tableBody.appendChild(row);
+        });
+      }
+
+      openModal('trendModal');
+    }
+
+    document.getElementById('viewTrendBtn').addEventListener('click', openTrendModal);
+
+    function showSnapshot(log) {
+      closeModal('trendModal');
+      const cfg = appState.config;
+
+      const dateHeading = new Date(log.timestamp).toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+      const timeStr = new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      document.getElementById('snapshotDateHeading').textContent = dateHeading;
+      document.getElementById('snapshotTimestampText').textContent = `Logged at ${timeStr} on ${log.date}`;
+
+      document.getElementById('snapshotQ6Title').textContent = cfg.q6.prompt;
+      document.getElementById('snapshotLabel_q6a').textContent = cfg.q6a.prompt;
+      document.getElementById('snapshotLabel_q6b').textContent = cfg.q6b.prompt;
+
+      document.getElementById('snapshotQ7Title').textContent = cfg.q7.prompt;
+      document.getElementById('snapshotLabel_q7a').textContent = cfg.q7a.prompt;
+      document.getElementById('snapshotLabel_q7b').textContent = cfg.q7b.prompt;
+
+      const q6Badge = document.getElementById('snapshotQ6Badge');
+      q6Badge.textContent = RANK_LABELS[log.q6] || `${log.q6}`;
+      document.getElementById('snapshotQ6a').textContent = log.q6a || '(No entry recorded)';
+      document.getElementById('snapshotQ6b').textContent = log.q6b || '(No entry recorded)';
+
+      const q7Badge = document.getElementById('snapshotQ7Badge');
+      q7Badge.textContent = RANK_LABELS[log.q7] || `${log.q7}`;
+      document.getElementById('snapshotQ7a').textContent = log.q7a || '(No entry recorded)';
+      document.getElementById('snapshotQ7b').textContent = log.q7b || '(No entry recorded)';
+
+      openModal('snapshotModal');
+    }
+
+    document.getElementById('adminBtn').addEventListener('click', () => {
+      document.getElementById('adminPinInput').value = '';
+      document.getElementById('pinErrorText').classList.add('hidden');
+      openModal('pinModal');
+      setTimeout(() => document.getElementById('adminPinInput').focus(), 100);
+    });
+
+    document.getElementById('submitPinBtn').addEventListener('click', checkAdminPin);
+    document.getElementById('adminPinInput').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkAdminPin();
+    });
+
+    function checkAdminPin() {
+      const pin = document.getElementById('adminPinInput').value.trim();
+      const currentPin = appState.config.pin || '1234';
+      if (pin === currentPin) {
+        closeModal('pinModal');
+        populateAdminDashboard();
+        openModal('adminModal');
+      } else {
+        document.getElementById('pinErrorText').classList.remove('hidden');
+      }
+    }
+
+    function switchAdminTab(index) {
+      document.querySelectorAll('.admin-tab-btn').forEach((btn, i) => {
+        if (i + 1 === index) {
+          btn.className = 'admin-tab-btn py-2 px-3 border-b-2 border-indigo-600 text-indigo-600';
+        } else {
+          btn.className = 'admin-tab-btn py-2 px-3 border-b-2 border-transparent text-slate-500 hover:text-slate-700';
+        }
+      });
+      document.querySelectorAll('.admin-tab-pane').forEach((pane, i) => {
+        if (i + 1 === index) {
+          pane.classList.remove('hidden');
+        } else {
+          pane.classList.add('hidden');
+        }
+      });
+    }
+
+    function populateAdminDashboard() {
+      const cfg = appState.config;
+      
+      const container = document.getElementById('adminQuestions1to5Container');
+      container.innerHTML = '';
+      for (let i = 1; i <= 5; i++) {
+        const key = `q${i}`;
+        const item = cfg[key] || DEFAULT_CONFIG[key];
+        const block = document.createElement('div');
+        block.className = 'p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3';
+        block.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-slate-800 text-xs uppercase tracking-wider">Question ${i} Configuration</span>
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-600 block">Question Title / Label:</label>
+            <input id="cfg_${key}_title" type="text" value="${item.title.replace(/"/g, '&quot;')}" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-600 block">Prompt / Placeholder Hint:</label>
+            <input id="cfg_${key}_prompt" type="text" value="${item.prompt.replace(/"/g, '&quot;')}" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">
+          </div>
+          <div>
+            <label class="text-xs font-semibold text-slate-600 block">Explanatory Pop-Up Text:</label>
+            <textarea id="cfg_${key}_explainer" rows="3" class="w-full mt-1 px-3 py-2 text-xs rounded-lg border border-slate-300">${item.explainer}</textarea>
+          </div>
+        `;
+        container.appendChild(block);
+      }
+
+      document.getElementById('cfg_q6_prompt').value = cfg.q6.prompt;
+      document.getElementById('cfg_q6_explainer').value = cfg.q6.explainer;
+      document.getElementById('cfg_q6a_prompt').value = cfg.q6a.prompt;
+      document.getElementById('cfg_q6b_prompt').value = cfg.q6b.prompt;
+
+      document.getElementById('cfg_q7_prompt').value = cfg.q7.prompt;
+      document.getElementById('cfg_q7_explainer').value = cfg.q7.explainer;
+      document.getElementById('cfg_q7a_prompt').value = cfg.q7a.prompt;
+      document.getElementById('cfg_q7b_prompt').value = cfg.q7b.prompt;
+
+      document.getElementById('cfg_scale_explainer').value = cfg.scaleExplainer;
+      document.getElementById('cfg_new_pin').value = '';
+    }
+
+    document.getElementById('saveAdminConfigBtn').addEventListener('click', () => {
+      for (let i = 1; i <= 5; i++) {
+        const key = `q${i}`;
+        appState.config[key] = {
+          title: document.getElementById(`cfg_${key}_title`).value.trim(),
+          prompt: document.getElementById(`cfg_${key}_prompt`).value.trim(),
+          explainer: document.getElementById(`cfg_${key}_explainer`).value.trim()
+        };
+      }
+
+      appState.config.q6.prompt = document.getElementById('cfg_q6_prompt').value.trim();
+      appState.config.q6.explainer = document.getElementById('cfg_q6_explainer').value.trim();
+      appState.config.q6a.prompt = document.getElementById('cfg_q6a_prompt').value.trim();
+      appState.config.q6b.prompt = document.getElementById('cfg_q6b_prompt').value.trim();
+
+      appState.config.q7.prompt = document.getElementById('cfg_q7_prompt').value.trim();
+      appState.config.q7.explainer = document.getElementById('cfg_q7_explainer').value.trim();
+      appState.config.q7a.prompt = document.getElementById('cfg_q7a_prompt').value.trim();
+      appState.config.q7b.prompt = document.getElementById('cfg_q7b_prompt').value.trim();
+
+      appState.config.scaleExplainer = document.getElementById('cfg_scale_explainer').value.trim();
+
+      saveState();
+      renderApp();
+      closeModal('adminModal');
+      showToast('All prompt and explanation changes applied successfully!', 'success');
+    });
+
+    document.getElementById('updatePinBtn').addEventListener('click', () => {
+      const newPin = document.getElementById('cfg_new_pin').value.trim();
+      if (!newPin || newPin.length < 4) {
+        showToast('PIN must be at least 4 digits.', 'warning');
+        return;
+      }
+      appState.config.pin = newPin;
+      saveState();
+      document.getElementById('cfg_new_pin').value = '';
+      showToast('Admin security PIN updated successfully!', 'success');
+    });
+
+    // Export Backup JSON
+    document.getElementById('exportJsonBtn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      const dateStr = getLocalDateString();
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `matrix_tracker_backup_${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Backup JSON file downloaded successfully!', 'success');
+    });
+
+    // Import Backup JSON
+    document.getElementById('importJsonInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (!imported.plan || !Array.isArray(imported.historyLogs)) {
+            throw new Error('Invalid schema format');
+          }
+
+          appState = {
+            ...appState,
+            ...imported,
+            config: { ...DEFAULT_CONFIG, ...(imported.config || {}) },
+            plan: { ...appState.plan, ...(imported.plan || {}) },
+            historyLogs: Array.isArray(imported.historyLogs) ? imported.historyLogs : []
+          };
+
+          saveState();
+          renderApp();
+          closeModal('adminModal');
+          showToast('Data and configuration restored successfully from backup!', 'success');
+        } catch (err) {
+          showToast('Failed to import backup: invalid JSON format.', 'danger');
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    // Reset Defaults
+    document.getElementById('resetDefaultsBtn').addEventListener('click', () => {
+      const pin = appState.config.pin;
+      appState.config = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+      appState.config.pin = pin;
+      saveState();
+      populateAdminDashboard();
+      renderApp();
+      showToast('Prompts and popups reset to system defaults.', 'info');
+    });
+
+    document.getElementById('startOverBtn').addEventListener('click', () => {
+      document.getElementById('confirmModalTitle').textContent = 'Permanently Start Over?';
+      document.getElementById('confirmModalMessage').textContent = 'Continuing will completely wipe out your foundational 5 plan questions, current assessment drafts, and all historical daily trend logs. Question customizations will be kept.';
+      
+      document.getElementById('confirmActionBtn').onclick = () => {
+        appState.plan = { q1: '', q2: '', q3: '', q4: '', q5: '' };
+        appState.planSaved = false;
+        appState.planLastSavedAt = null;
+        appState.currentAssessment = { q6: 2, q6a: '', q6b: '', q7: 2, q7a: '', q7b: '', lastLoggedAt: null };
+        appState.historyLogs = [];
+
+        saveState();
+        closeModal('confirmModal');
+        renderApp();
+        showToast('All plan data and history have been reset.', 'info');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      openModal('confirmModal');
+    });
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+
+      const bgStyle = type === 'success' ? 'bg-emerald-600 text-white shadow-emerald-200' :
+                      type === 'warning' ? 'bg-amber-600 text-white shadow-amber-200' :
+                      type === 'danger'  ? 'bg-rose-600 text-white shadow-rose-200' :
+                      'bg-slate-900 text-white shadow-slate-300';
+
+      toast.className = `flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium ${bgStyle} transition-all duration-300 opacity-0 translate-y-2 pointer-events-auto max-w-sm`;
+      
+      const icon = type === 'success' 
+        ? `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`
+        : `<svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+
+      toast.innerHTML = `${icon}<span>${message}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => toast.classList.remove('opacity-0', 'translate-y-2'), 20);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        ['infoModal', 'trendModal', 'snapshotModal', 'confirmModal', 'pinModal', 'adminModal', 'termsModal'].forEach(id => closeModal(id));
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      requestPersistentStorage();
+      loadState();
+      renderApp();
+    });
+  </script>
+</body>
+</html>
+```
