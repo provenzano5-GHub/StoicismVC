@@ -131,10 +131,10 @@
         <div>
           <div class="flex items-center gap-2">
             <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold">1</span>
-            <h2 class="text-base sm:text-lg font-bold text-slate-900">Foundational Strategic Plan (Questions 1 - 5)</h2>
+            <h2 class="text-base sm:text-lg font-bold text-slate-900">Exploring your Values (Questions 1 - 5)</h2>
           </div>
           <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Establish your core strategic framework. All 5 questions must be answered to activate your baseline and unlock the periodic progress tracker.
+            Writing is validating a first draft. The 'tweaking part' occurs throughout life as you better understand both your values and how you might achieve them. Start now to activate a baseline and unlock the periodic progress tracker. Life is a river; we cannot stop its flow, so we ride with it. We accept that there are many paths to success if we stay mindful, stay accepting, and trust ourselves to do our best. Directing ample forgiveness and compassion toward ourselves along the way.   
           </p>
         </div>
         <div id="planStatusTag" class="self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5">
@@ -1095,7 +1095,7 @@
       const q5 = document.getElementById('q5').value.trim();
 
       if (!q1 || !q2 || !q3 || !q4 || !q5) {
-        showToast('Please answer all 5 foundational questions before saving your plan.', 'warning');
+        showToast('Please answer all 5 questions before saving your plan. You can tweak them over time.', 'warning');
         return;
       }
 
