@@ -134,7 +134,7 @@
             <h2 class="text-base sm:text-lg font-bold text-slate-900">Exploring your Values (Questions 1 - 5)</h2>
           </div>
           <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Writing validates a current reality and current state of values. The 'tweaking' will occur throughout life as you awaken insight into the many ways to word and achieve them. Start now to activate a baseline and unlock the periodic progress tracker. Life is a river; we cannot stop its flow, so we ride with it. We accept that there are many paths to success if we stay mindful, accepting, and trust ourselves to do our best. Directing ample forgiveness and compassion toward ourselves along the way.   
+            Writing validates a current reality and current state of values. The 'tweaking' will occur throughout life as you awaken insight into productive ways to word and refine. Start now to activate a baseline and to unlock the periodic progress tracker. Life is a river; we cannot stop its flow, so we ride it; we accept the many paths to success offered to us, as we stay mindful, accepting, and trust ourselves to do our best. Remember to apply ample forgiveness and compassion toward yourself along the way.   
           </p>
         </div>
         <div id="planStatusTag" class="self-start sm:self-auto text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 border border-amber-200 flex items-center gap-1.5">
@@ -148,7 +148,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label for="q1" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-              <span id="label_q1">Question 1: Core Objectives & Vision</span>
+              <span id="label_q1">Q1: What do you feel is the most important value driver in your life?</span>
               <span class="text-rose-500 text-xs">*</span>
             </label>
             <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q1" title="Explanation & Purpose">
@@ -165,7 +165,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label for="q2" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-              <span id="label_q2">Question 2: Strategic Methods & Daily Disciplines</span>
+              <span id="label_q2">Q2: What gives your life value and meaning?</span>
               <span class="text-rose-500 text-xs">*</span>
             </label>
             <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q2" title="Explanation & Purpose">
@@ -182,7 +182,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label for="q3" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-              <span id="label_q3">Question 3: Friction, Roadblocks & Contingencies</span>
+              <span id="label_q3">Q3: What do you want your life to stand for or be about?</span>
               <span class="text-rose-500 text-xs">*</span>
             </label>
             <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q3" title="Explanation & Purpose">
@@ -199,7 +199,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label for="q4" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-              <span id="label_q4">Question 4: Required Resources & Support Networks</span>
+              <span id="label_q4">Q4: What do you want to spend your life doing?</span>
               <span class="text-rose-500 text-xs">*</span>
             </label>
             <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q4" title="Explanation & Purpose">
@@ -216,7 +216,7 @@
         <div class="space-y-2">
           <div class="flex items-center justify-between">
             <label for="q5" class="text-sm font-semibold text-slate-800 flex items-center gap-1.5">
-              <span id="label_q5">Question 5: Measurable Milestones & Verifiable Signs</span>
+              <span id="label_q5">Q5: What would you do next if you weren't worried or anxious about your path, or its chance of success?</span>
               <span class="text-rose-500 text-xs">*</span>
             </label>
             <button type="button" class="info-btn text-slate-400 hover:text-indigo-600 transition-colors p-1" data-qid="q5" title="Explanation & Purpose">
@@ -856,27 +856,27 @@
     const DEFAULT_CONFIG = {
       pin: '1234',
       q1: {
-        title: "Question 1: Core Objectives & Vision",
-        prompt: "What are the essential, high-impact goals you are committing to achieve?",
-        explainer: "Define the overarching outcomes you are committing to achieve.\n\nThis anchors your foundational plan. Rather than listing trivial tasks, formulate 1 to 3 pivotal results that define transformative success over this tracking cycle."
+        title: "Q1: What do you feel is the most important value driver in your life?",
+        prompt: "Think of roles and character-based values.",
+        explainer: "You may not fully achieve these value drivers, and that confirms a journey and way of living, not just something you achieve and check off a list. It's always there in the background, keeping you grounded in your preferred way of living. Use this method to get to this: Imagine you are already dead and listening in at your own funeral; what would you want to hear as people describe your life? How would they describe someone who fulfilled their role(s) well?"
       },
       q2: {
-        title: "Question 2: Strategic Methods & Daily Disciplines",
+        title: "Q2: What gives your life value and meaning?",
         prompt: "What repeatable workflows, habits, or methodologies will drive execution?",
         explainer: "Clarify the exact methodologies and rituals that turn vision into reality.\n\nOutline how you will execute your priorities on a systematic basis (e.g., deep work blocks, weekly agile sprints, structured review intervals)."
       },
       q3: {
-        title: "Question 3: Friction, Roadblocks & Contingencies",
+        title: "Q3: What do you want your life to stand for or be about?",
         prompt: "What potential constraints, blockers, or pitfalls might derail this plan and how will you handle them?",
         explainer: "Pre-mortem foreseeable challenges to engineer proactive resilience.\n\nIdentify what internal or external disruptions could derail focus (burnout, dependency delays, scope creep) and define your default countermeasure."
       },
       q4: {
-        title: "Question 4: Required Resources & Support Networks",
+        title: "Q4: What do you want to spend your life doing?",
         prompt: "What tools, systems, advisory partners, or skills are required for reliable momentum?",
         explainer: "Audit and assemble the prerequisite assets needed for sustained momentum.\n\nIdentify software tools, budget, key collaborators, mentors, or educational resources essential to your velocity."
       },
       q5: {
-        title: "Question 5: Measurable Milestones & Verifiable Signs",
+        title: "Q5: What would you do next if you weren't worried or anxious about your path, or its chance of success?",
         prompt: "What explicit quantitative criteria or tangible outcomes indicate undeniable success?",
         explainer: "Establish quantifiable criteria that prove progress without ambiguity.\n\nState concrete metrics or milestones that will tell you without self-deception whether the plan is succeeding."
       },
