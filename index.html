@@ -853,6 +853,7 @@
 
   <script>
     /* Default System Configuration & Methodology Text */
+    /* The prompt is in the edit box - it goes away when text is written over it. The explainer pops up when the 'info icon' is pressed. */
     const DEFAULT_CONFIG = {
       pin: '1234',
       q1: {
@@ -862,38 +863,38 @@
       },
       q2: {
         title: "Q2: What gives your life value and meaning?",
-        prompt: "What repeatable workflows, habits, or methodologies will drive execution?",
-        explainer: "Clarify the exact methodologies and rituals that turn vision into reality.\n\nOutline how you will execute your priorities on a systematic basis (e.g., deep work blocks, weekly agile sprints, structured review intervals)."
+        prompt: "What, when you are doing it, seems effortless?",
+        explainer: "Nothing important is effortless, but it might feel that way because you love what you are doing. What you are doing might in fact be very, very hard, but you find you are happy to repeat it. Often because the effort is in line with something you hold dear."
       },
       q3: {
         title: "Q3: What do you want your life to stand for or be about?",
-        prompt: "What potential constraints, blockers, or pitfalls might derail this plan and how will you handle them?",
-        explainer: "Pre-mortem foreseeable challenges to engineer proactive resilience.\n\nIdentify what internal or external disruptions could derail focus (burnout, dependency delays, scope creep) and define your default countermeasure."
+        prompt: "You might want to list items connected with important roles you have taken on.",
+        explainer: "As for roles: Are you a parent? Do you own a business? Do you volunteer or work with others on important goals? Are you a sibling or do you have family ties? Are educational goals or hobbies meaningful? \n\n Whatever the case, list the most important of these and add to or adjust going forward."
       },
       q4: {
         title: "Q4: What do you want to spend your life doing?",
-        prompt: "What tools, systems, advisory partners, or skills are required for reliable momentum?",
-        explainer: "Audit and assemble the prerequisite assets needed for sustained momentum.\n\nIdentify software tools, budget, key collaborators, mentors, or educational resources essential to your velocity."
+        prompt: "What is your work, hobby, vocation, or all three?",
+        explainer: "This is getting a little more specific, but it doesn't have to be if that doesn't work.\n\n Like all the questions, you are attempting to create the most useful and high-level listing of things that truly matter to you, at whatever point you are at in your journey."
       },
       q5: {
         title: "Q5: What would you do next if you weren't worried or anxious about your path, or its chance of success?",
-        prompt: "What explicit quantitative criteria or tangible outcomes indicate undeniable success?",
-        explainer: "Establish quantifiable criteria that prove progress without ambiguity.\n\nState concrete metrics or milestones that will tell you without self-deception whether the plan is succeeding."
+        prompt: "Are there any thoughts that are holding you back from doing what you would like?",
+        explainer: "Be mindful of your worries and fear. If you can use them to identify a path forward, that is best. Take action to overcome them when they are blocking you from living your dreams. This question is asking you to take whatever stand you can to resovle to overcome challenges and to not limit yourself in achieving where you can see yourself being happiest at."
       },
       q6: {
-        title: "Question 6: Milestone & Execution Velocity",
-        prompt: "Self-Assessed Progress against Key Plan Commitments",
-        explainer: "Rate your execution against your planned commitments (Questions 1–5).\n\nUse the 4-point scale to assess whether your daily actions are translating to authentic forward velocity."
+        title: "Q6: Self-Assessment of Values Clarification",
+        prompt: "What percentage of time did you devote to reflecting on the state of your core values? i.e. Questions 1-5",
+        explainer: "Rate your execution against your plan for review and clarification of your values (Questions 1–5).\n\nUse the 4-point scale to assess whether your efforts are translating to authentic forward velocity."
       },
       q6a: {
-        prompt: "6a. Concrete accomplishments completed:"
+        prompt: "6a. What tactics would improve your abilities and self-rating? Come up with at least one you can achieve:"
       },
       q6b: {
-        prompt: "6b. Key friction, hurdles, or stalls encountered:"
+        prompt: "6b. How will you make time for your improvement strategy? At least one action to take:"
       },
       q7: {
-        title: "Question 7: Adaptability & Resource Synergy",
-        prompt: "Self-Assessed Dynamic Alignment & Resource Optimization",
+        title: "Q7: Self-Assessing Time commitments",
+        prompt: "How much time were you engaged in high-value, intrinsically valuable activities consistent with your plans?",
         explainer: "Rate how effectively you adjusted your resources and habits when real-world constraints arose.\n\nAssesses proactive alignment and resilience."
       },
       q7a: {
