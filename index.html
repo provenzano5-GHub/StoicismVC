@@ -274,7 +274,7 @@
             <h2 class="text-base sm:text-lg font-bold text-slate-900">Current Assessment of Actions & Trends (Questions 6 & 7)</h2>
           </div>
           <p class="text-xs sm:text-sm text-slate-500 mt-1">
-            Rate execution against your foundational plan. Saving records a timestamped snapshot (maximum 1 log entry per calendar day).
+            Rate execution against your foundational plan. Each save will record a timestamped snapshot (maximum 1 log entry per calendar day). Over time, this gives you insight into your progress.
           </p>
         </div>
 
@@ -779,7 +779,7 @@
           <!-- Data Backup & Restore (JSON) -->
           <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 space-y-3">
             <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wider">Data Portability (Capacitor & Web Storage)</h4>
-            <p class="text-xs text-slate-500">Export a complete `.json` archive of your plan, prompts, and trend history, or restore an earlier backup file.</p>
+            <p class="text-xs text-slate-500">Export a complete `.json` archive of your plan, prompts, and trend history (stored in Downloads folder of the device used), or restore an earlier backup file.</p>
             <div class="flex flex-wrap gap-3 pt-1">
               <button id="exportJsonBtn" type="button" class="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -857,29 +857,29 @@
     const DEFAULT_CONFIG = {
       pin: '1234',
       q1: {
-        title: "Q1: What do you feel is the most important value driver in your life?",
+        title: "Q1: What do you feel is/are the most important value driver(s) in your life?",
         prompt: "Think of roles and character-based values.",
-        explainer: "You may not fully achieve these value drivers, and that confirms a journey and way of living, not just something you achieve and check off a list. It's always there in the background, keeping you grounded in your preferred way of living. Use this method to get to this: Imagine you are already dead and listening in at your own funeral; what would you want to hear as people describe your life? How would they describe someone who fulfilled their role(s) well?"
+        explainer: "You may not fully achieve these value drivers, and that confirms a way of living, not just something you achieve and check off a list.\n\n These ways of living keep you grounded in your journey. Use this method to get ideas: Imagine you are already dead and listening in at your own funeral; what would you want to hear as people describe your life? How would they describe someone who fulfilled their role(s) well?"
       },
       q2: {
         title: "Q2: What gives your life value and meaning?",
         prompt: "What, when you are doing it, seems effortless?",
-        explainer: "Nothing important is effortless, but it might feel that way because you love what you are doing. What you are doing might in fact be very, very hard, but you find you are happy to repeat it. Often because the effort is in line with something you hold dear."
+        explainer: "Nothing important is effortless, but it might feel that way because you love what you are doing.\n\nWhat you are doing might in fact be very, very hard, but you are drawn to it nonetheless. Often this indicates the effort is in line with something you hold dear."
       },
       q3: {
         title: "Q3: What do you want your life to stand for or be about?",
         prompt: "You might want to list items connected with important roles you have taken on.",
-        explainer: "As for roles: Are you a parent? Do you own a business? Do you volunteer or work with others on important goals? Are you a sibling or do you have family ties? Are educational goals or hobbies meaningful? \n\n Whatever the case, list the most important of these and add to or adjust going forward."
+        explainer: "As for roles: Are you a parent? Do you own a business? Do you volunteer or work with others on important goals? Do you have siblings or strong family ties? Are educational goals or hobbies meaningful? \n\nWhatever the case, list the most important of these and add to or adjust going forward."
       },
       q4: {
         title: "Q4: What do you want to spend your life doing?",
         prompt: "What is your work, hobby, vocation, or all three?",
-        explainer: "This is getting a little more specific, but it doesn't have to be if that doesn't work.\n\n Like all the questions, you are attempting to create the most useful and high-level listing of things that truly matter to you, at whatever point you are at in your journey."
+        explainer: "This is getting a little more specific, but it doesn't have to be if that doesn't work.\n\nLike all the questions, you are attempting to create a useful and high-level list of the things that truly matter to you, that you tweak and clarify at any point in your journey."
       },
       q5: {
         title: "Q5: What would you do next if you weren't worried or anxious about your path, or its chance of success?",
         prompt: "Are there any thoughts that are holding you back from doing what you would like?",
-        explainer: "Be mindful of your worries and fear. If you can use them to identify a path forward, that is best. Take action to overcome them when they are blocking you from living your dreams. This question is asking you to take whatever stand you can to resovle to overcome challenges and to not limit yourself in achieving where you can see yourself being happiest at."
+        explainer: "Be mindful of your worries and fear. If you can use them to identify a path forward, that is best. Take action to face or overcome what is blocking you from living your dreams.\n\nThis question asks you to take whatever stand you can in order to resolve and overcome fear and/or, to spur progress. Do your best to be your best and authentic self."
       },
       q6: {
         title: "Q6: Self-Assessment of Values Clarification",
@@ -903,7 +903,7 @@
       q7b: {
         prompt: "7b. Immediate focus priorities for next check-in:"
       },
-      scaleExplainer: "The 4-value scale provides a standardized self-assessment of how effectively you are executing relative to your foundational plan (Questions 1–5):\n\n1 - None: Minimal or zero measurable progress made against planned milestones; severe stalls or derailment.\n\n2 - Some: Partial execution; foundational groundwork initiated, but critical milestones remain unreached or delayed.\n\n3 - Much: Substantial, meaningful forward movement; major milestones achieved with high adherence to planned strategies.\n\n4 - Maximal: Optimal, peak execution; surpassed targets, maintained disciplines, and resolved friction proactively."
+      scaleExplainer: "A 4-value scale provides a solid self-assessment of how effectively you are executing relative to your foundational plan (Questions 1–5) and progress:\n\n1 - None     (Minimal or zero measurable progress made against planned milestones.)\n\n2 - Some    (Partial execution; something initiated, but critical milestones not met as expected.)\n\n3 - Much     (Substantial, meaningful forward movement; adherence to planned strategies.)\n\n4 - Maximal     (Optimal, peak execution; met targets, maintained disciplines.)"
     };
 
     const STORAGE_KEY = 'matrix_tracker_data_v3';
